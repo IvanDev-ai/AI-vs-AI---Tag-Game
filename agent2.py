@@ -6,18 +6,18 @@ from collections import deque
 from model import Linear_QNet, QTrainer
 
 
-MAX_MEMORY = 100_000
-BATCH_SIZE = 1000
-LR = 0.001
+MAX_MEMORY = 100_000  # Tamaño máximo de la memoria de replay
+BATCH_SIZE = 1000  # Tamaño del lote para el entrenamiento
+LR = 0.001  # Tasa de aprendizaje
 
 class Agent2:
     def __init__(self):
         self.n_games = 0
-        self.epsilon = 0 #randomness
-        self.gamma = 0.9 #discount rate
-        self.memmory = deque(maxlen = MAX_MEMORY) #popleft()
-        self.model = Linear_QNet(8,256,4)
-        self.trainer = QTrainer(self.model, lr = LR, gamma = self.gamma)
+        self.epsilon = 0  # Factor de aleatoriedad
+        self.gamma = 0.9  # Tasa de descuento
+        self.memory = deque(maxlen=MAX_MEMORY)  # Memoria de replay (cola de tamaño limitado)
+        self.model = Linear_QNet(8, 256, 4)  # Inicialización del modelo Q-network
+        self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)  # Inicialización del entrenador Q
 
 
     def get_state(self,game):
@@ -43,33 +43,47 @@ class Agent2:
 
         return np.array(state, dtype=int)
 
-    def remember(self,state,action,reward_j2,next_state,done):
-        self.memmory.append((state,action,reward_j2,next_state,done)) 
+    def remember(self, state, action, reward_j2, next_state, done):
+    # Almacena la experiencia en la memoria del agente
+        self.memory.append((state, action, reward_j2, next_state, done))
 
     def train_long_memory(self):
-        if len(self.memmory) > BATCH_SIZE:
-            mini_sample = random.sample(self.memmory,BATCH_SIZE)
+        if len(self.memory) > BATCH_SIZE:
+            # Muestreo aleatorio de BATCH_SIZE experiencias de la memoria
+            mini_sample = random.sample(self.memory, BATCH_SIZE)
         else:
-            mini_sample = self.memmory
+            # Si la memoria es menor que BATCH_SIZE, toma toda la memoria como muestra
+            mini_sample = self.memory
         
-        states , actions , reward_j2s , next_states , dones = zip(*mini_sample)
-        self.trainer.train_step(states,actions,reward_j2s,next_states,dones)
+        # Desempaqueta las muestras en listas separadas
+        states, actions, reward_j2s, next_states, dones = zip(*mini_sample)
+        
+        # Entrena el modelo usando las muestras
+        self.trainer.train_step(states, actions, reward_j2s, next_states, dones)
 
     def train_short_memory(self,state,action,reward_j2,next_state,done):
+        # Entrena el modelo con una única experiencia
         self.trainer.train_step(state,action,reward_j2,next_state,done)
 
-    def get_action(self,state):
+    def get_action(self, state):
+        # Actualiza el valor de epsilon basado en el número de juegos jugados
         self.epsilon = 80 - self.n_games
-        final_move = [0,0,0,0]
-        if random.randint(0,200) < self.epsilon:
-            move = random.randint(0,3)
+        
+        # Inicializa una lista para representar la acción final
+        final_move = [0, 0, 0, 0]
+        
+        # Exploración: elige una acción al azar si el valor aleatorio es menor que epsilon
+        if random.randint(0, 200) < self.epsilon:
+            move = random.randint(0, 3)
             final_move[move] = 1
         else:
-            state0 = torch.tensor(state,dtype = torch.float)
+            # Explotación: elige la acción con la predicción más alta según el modelo
+            state0 = torch.tensor(state, dtype=torch.float)
             prediction = self.model(state0)
             move = torch.argmax(prediction).item()
             final_move[move] = 1
 
+        # Devuelve la acción final como lista one-hot
         return final_move
     
 
