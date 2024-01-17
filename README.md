@@ -1,6 +1,4 @@
 ## Tag Game with Pygame and Reinforcement Learning
-![game](https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/1be6a587-d1e8-4a30-8d7a-431784391c01)
-
 
 ## English
 ### Description:
@@ -14,3 +12,6 @@ Implementa un juego de pilla-pilla utilizando Pygame con dos agentes: un cazador
   pero puede avanzar 2 celdas cada 2 turnos. Ambos agentes son creados con una red neuronal "Feed-Forward" con una capa oculta. Los agentes son entrenados mediante aprendizaje por refuerzo, y las 
   predicciones se realizan utilizando la ecuación de Bellman.
 Para probar el juego debes ejecutar agent.py
+
+
+![game](https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/1be6a587-d1e8-4a30-8d7a-431784391c01)
