@@ -1,4 +1,6 @@
 <h1>Tag Game with Pygame and Reinforcement Learning</h1>
+![game](https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/c2d29157-5e64-4b0b-86d8-179e5ec79206)
+
 <h2>English</h2>
 <h3>Description:</h3>
 <p>Implement a tag game using Pygame with two agents - a hunter and prey. The hunter can move in diagonal as well as 1 unit at a time, while the prey cannot move diagonally but can move 2 cells at a time every 2 turns. 
