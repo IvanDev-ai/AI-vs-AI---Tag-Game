@@ -14,7 +14,7 @@ margin = 2  # Margen entre celdas
 grid_size = 5  # Tamaño de la cuadrícula (5x5)
 
 # Colores
-WHITE = (255, 255, 255)
+WHITE = (245, 245, 220)
 
 # Lógica para los contadores
 move_timer = pygame.USEREVENT + 1
