@@ -1,4 +1,4 @@
-#Tag Game with Pygame and Reinforcement Learning
+##Tag Game with Pygame and Reinforcement Learning
 
 ##English
 ###Description:
