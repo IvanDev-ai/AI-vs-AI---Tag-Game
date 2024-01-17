@@ -1,5 +1,6 @@
 ## Tag Game with Pygame and Reinforcement Learning
-![game_final](https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/09818cdb-43f4-4343-b8bf-a3ec1bf26905)
+![game](https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/1be6a587-d1e8-4a30-8d7a-431784391c01)
+
 
 ## English
 ### Description:
