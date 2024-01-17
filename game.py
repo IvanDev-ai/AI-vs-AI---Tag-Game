@@ -20,6 +20,7 @@ WHITE = (245, 245, 220)
 move_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(move_timer, 1000)
 
+#Clases para las guardar las direcciones de cada jugador.
 class Direction_j1(Enum):
     RIGHT = 1
     LEFT = 2
@@ -36,9 +37,10 @@ class Direction_j2(Enum):
     UP = 3
     DOWN = 4
 
+#clase del juego principal que ejecuta la logica del juego
 class Game:
     def __init__(self):
-    # Crear la ventana
+    # Crear la ventana, resetea y establece los contadores de ganadas por jugador
         self.display = pygame.display.set_mode((screen_width, screen_height))
         pygame.display.set_caption("Escape Game")
         self.clock = pygame.time.Clock()
@@ -47,22 +49,25 @@ class Game:
         self.contador_J2 = 0
 
     def reset(self):
-    # Definir jugadores y sus representaciones usando las clases
+    # Definir jugadores y sus representaciones usando las clases y resetea las variables de los jugadores
         self.jugador1 = Jugador1('X', grid_size,10,3)
         self.jugador2 = Jugador2('O', grid_size,10,3)
         self.jugador1.reset()
         self.jugador2.reset()
         self.turno = True
-
+# Funcion que sirve para la logica del juego, recibe una tupla de acciones y devuelve las recompensas.
     def play_step(self, actions):
+        # Handle pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
             elif event.type == move_timer:
+                # Update time and movements for both players
                 self.jugador2.update_time_and_movements()
                 self.jugador1.update_time_and_movements()
 
+        # Check whose turn it is and make the corresponding move
         if self.turno:
             self._move_j2(actions[0])
             self.turno = False
@@ -70,12 +75,18 @@ class Game:
             self._move_j1(actions[1])
             self.turno = True
         
+        # Update the user interface
         self.updateUI()
+        
+        # Set the frame rate to 30 frames per second
         self.clock.tick(30)
 
+        # Initialize rewards and game-over flag
         reward_j1 = 0
         reward_j2 = 0
         game_over = False
+        
+        # Check for game-over conditions
         if self.jugador1.moves <= 0 or self.jugador2.moves <= 0:
             game_over = True
             reward_j1 = -10
@@ -89,7 +100,9 @@ class Game:
             self.contador_J1 += 1
             print("Ha ganado el jugador 1")
         
-        return reward_j1,reward_j2,game_over
+        # Return rewards and game-over flag
+        return reward_j1, reward_j2, game_over
+
 
     def updateUI(self):
         self.display.fill(WHITE)  # Fondo blanco
