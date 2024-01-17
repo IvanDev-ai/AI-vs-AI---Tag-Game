@@ -1,9 +1,8 @@
 import pygame
 # Colores
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+RED = (168, 38, 38)
+GREEN = (35, 148, 40)
+DARKGREEN = (36, 75, 46)
 
 class Map:
     def __init__(self, screen, grid_size, cell_size, margin):
@@ -20,7 +19,7 @@ class Map:
                 
                 # Dibujar cuadrículas negras en (1, 1) y (3, 3)
                 if (row, col) in [(1, 1), (3, 3)]:
-                    pygame.draw.rect(self.screen, BLACK, rect)
+                    pygame.draw.rect(self.screen, DARKGREEN, rect)
 
 
     def draw_players(self, jugador1, jugador2):
