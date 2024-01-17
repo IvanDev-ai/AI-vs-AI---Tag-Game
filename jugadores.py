@@ -13,6 +13,7 @@ class Jugador:
         self.frame_iteration = 0
         self.direction = None
 
+    #Funcion para obtener la celda actual donde se encuentra el jugador
     def get_current_cell(self):
         row = self.pos[0]
         col = self.pos[1]
@@ -35,12 +36,13 @@ class Jugador:
         # Resetear la variable de movimiento
         self.has_moved = False
 
+    #Funcion para generar una posicion inicial aleatoria dentro del tablero
     def generate_position(self):
         while True:
             pos = (random.randint(0, self.grid_size - 1), random.randint(0, self.grid_size - 1))
             if pos != (1, 1) and pos != (3, 3):  # Evitar las celdas negras
                 return pos
-            
+    #Funcion que resetea las variables de cada jugador
     def reset(self):
         self.moves = 10
         self.time_left = 3
