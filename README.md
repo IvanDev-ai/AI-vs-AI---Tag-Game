@@ -14,4 +14,4 @@ Implementa un juego de pilla-pilla utilizando Pygame con dos agentes: un cazador
 Para probar el juego debes ejecutar agent.py
 
 
-![game](https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/1be6a587-d1e8-4a30-8d7a-431784391c01)
+<img src="https://github.com/IvanDev-ai/AI-vs-AI---Tag-Game/assets/123570888/1be6a587-d1e8-4a30-8d7a-431784391c01" width="500" height="600">
