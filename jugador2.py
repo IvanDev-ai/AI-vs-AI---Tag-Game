@@ -1,4 +1,13 @@
 from jugadores import Jugador
+from enum import Enum
+import numpy as np
+
+class Direction_j2(Enum):
+    RIGHT = 1
+    LEFT = 2
+    UP = 3
+    DOWN = 4
+
 
 class Jugador2(Jugador):
     def __init__(self, icono, grid_size,moves, time_left):
@@ -61,3 +70,18 @@ class Jugador2(Jugador):
             self.has_moved = True
             self.frame_iteration += 1
             self.moves -= 1
+
+        
+    def _move_j2(self,action):
+            directions = {0: Direction_j2.RIGHT, 1: Direction_j2.LEFT, 2: Direction_j2.UP,
+                3: Direction_j2.DOWN}
+            new_dir = directions[np.argmax(action)]  # Esto te dará la dirección correspondiente a la acción
+            self.direction = new_dir
+            if self.direction == Direction_j2.RIGHT:
+                self.move_right()
+            elif self.direction == Direction_j2.LEFT:
+                self.move_left()
+            elif self.direction == Direction_j2.UP:
+                self.move_up()
+            elif self.direction == Direction_j2.DOWN:
+                self.move_down()

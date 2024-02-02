@@ -2,7 +2,6 @@ import pygame
 from jugador1 import Jugador1
 from jugador2 import Jugador2
 from map import Map
-from enum import Enum
 import numpy as np
 # Inicializar Pygame
 pygame.init()
@@ -20,22 +19,9 @@ WHITE = (245, 245, 220)
 move_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(move_timer, 1000)
 
-#Clases para las guardar las direcciones de cada jugador.
-class Direction_j1(Enum):
-    RIGHT = 1
-    LEFT = 2
-    UP = 3
-    DOWN = 4
-    UP_RIGHT = 5
-    UP_LEFT = 5
-    DOWN_RIGHT = 5
-    DOWN_LEFT = 5
 
-class Direction_j2(Enum):
-    RIGHT = 1
-    LEFT = 2
-    UP = 3
-    DOWN = 4
+
+
 
 #clase del juego principal que ejecuta la logica del juego
 class Game:
@@ -69,10 +55,10 @@ class Game:
 
         # Check whose turn it is and make the corresponding move
         if self.turno:
-            self._move_j2(actions[0])
+            self.jugador2._move_j2(actions[0])
             self.turno = False
         elif not self.turno:
-            self._move_j1(actions[1])
+            self.jugador1._move_j1(actions[1])
             self.turno = True
         
         # Update the user interface
@@ -120,42 +106,3 @@ class Game:
 
         # Actualizar la pantalla
         pygame.display.flip()
-
-    def _move_j1(self,action):
-            directions = {0: Direction_j1.RIGHT, 1: Direction_j1.LEFT, 2: Direction_j1.UP,
-                3: Direction_j1.DOWN, 4: Direction_j1.UP_RIGHT, 5: Direction_j1.UP_LEFT,
-                6: Direction_j1.DOWN_RIGHT, 7: Direction_j1.DOWN_LEFT}
-
-            new_dir = directions[np.argmax(action)]  # Esto te dará la dirección correspondiente a la acción
-            self.jugador1.direction = new_dir
-            if self.jugador1.direction == Direction_j1.RIGHT:
-                self.jugador1.move_right()
-            elif self.jugador1.direction == Direction_j1.LEFT:
-                self.jugador1.move_left()
-            elif self.jugador1.direction == Direction_j1.UP:
-                self.jugador1.move_up()
-            elif self.jugador1.direction == Direction_j1.DOWN:
-                self.jugador1.move_down()
-            elif self.jugador1.direction == Direction_j1.UP_RIGHT:
-                self.jugador1.move_up_right()
-            elif self.jugador1.direction == Direction_j1.UP_LEFT:
-                self.jugador1.move_up_left()
-            elif self.jugador1.direction == Direction_j1.DOWN_RIGHT:
-                self.jugador1.move_down_right()
-            elif self.jugador1.direction == Direction_j1.DOWN_LEFT:
-                self.jugador1.move_down_left()
-
-
-    def _move_j2(self,action):
-            directions = {0: Direction_j2.RIGHT, 1: Direction_j2.LEFT, 2: Direction_j2.UP,
-                3: Direction_j2.DOWN}
-            new_dir = directions[np.argmax(action)]  # Esto te dará la dirección correspondiente a la acción
-            self.jugador2.direction = new_dir
-            if self.jugador2.direction == Direction_j2.RIGHT:
-                self.jugador2.move_right()
-            elif self.jugador2.direction == Direction_j2.LEFT:
-                self.jugador2.move_left()
-            elif self.jugador2.direction == Direction_j2.UP:
-                self.jugador2.move_up()
-            elif self.jugador2.direction == Direction_j2.DOWN:
-                self.jugador2.move_down()

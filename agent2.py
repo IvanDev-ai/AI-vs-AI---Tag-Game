@@ -1,7 +1,7 @@
 import torch
 import random
 import numpy as np
-from game import Direction_j2
+from jugador2 import Direction_j2
 from collections import deque
 from model import Linear_QNet, QTrainer
 

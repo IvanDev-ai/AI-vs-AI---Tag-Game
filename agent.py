@@ -1,7 +1,8 @@
 import torch
 import random
 import numpy as np
-from game import Direction_j1,Game
+from game import Game
+from jugador1 import Direction_j1
 from collections import deque
 from model import Linear_QNet, QTrainer
 from agent2 import Agent2
