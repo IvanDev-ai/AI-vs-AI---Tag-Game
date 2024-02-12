@@ -174,10 +174,3 @@ def train():
             # Imprimir el número del juego actual
             print("Game", agent.n_games)
 
-            
-            
-
-
-
-if __name__ == "__main__":
-    train()
