@@ -1,1 +1,7 @@
 torch
+pygame
+numpy
+collections
+streamlit
+random
+Enum

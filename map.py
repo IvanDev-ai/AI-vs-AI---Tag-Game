@@ -1,5 +1,3 @@
-import streamlit as st
-
 # Definir constantes de colores
 RED = (168, 38, 38)
 GREEN = (35, 148, 40)
