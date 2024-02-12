@@ -2,7 +2,7 @@ import pygame
 from jugador1 import Jugador1
 from jugador2 import Jugador2
 from map import Map
-import numpy as np
+import streamlit as st
 # Inicializar Pygame
 pygame.init()
 
@@ -33,76 +33,60 @@ class Game:
         self.reset()
         self.contador_J1 = 0
         self.contador_J2 = 0
+        # Crear un contenedor vacío
+        self.container = st.empty()
+        self.container2 = st.empty()
 
     def reset(self):
     # Definir jugadores y sus representaciones usando las clases y resetea las variables de los jugadores
-        self.jugador1 = Jugador1('X', grid_size,10,3)
-        self.jugador2 = Jugador2('O', grid_size,10,3)
+        self.jugador1 = Jugador1('😡', grid_size,10,3)
+        self.jugador2 = Jugador2('😭', grid_size,10,3)
         self.jugador1.reset()
         self.jugador2.reset()
         self.turno = True
 # Funcion que sirve para la logica del juego, recibe una tupla de acciones y devuelve las recompensas.
     def play_step(self, actions):
-        # Handle pygame events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            elif event.type == move_timer:
-                # Update time and movements for both players
-                self.jugador2.update_time_and_movements()
-                self.jugador1.update_time_and_movements()
+        # Actualizar tiempo y movimientos
+        self.jugador2.update_time_and_movements()
+        self.jugador1.update_time_and_movements()
 
-        # Check whose turn it is and make the corresponding move
+        # Mover jugadores según el turno
         if self.turno:
             self.jugador2._move_j2(actions[0])
             self.turno = False
-        elif not self.turno:
+        else:
             self.jugador1._move_j1(actions[1])
             self.turno = True
-        
-        # Update the user interface
+
+        # Llamar a updateUI para reflejar los cambios en la interfaz
         self.updateUI()
         
-        # Set the frame rate to 30 frames per second
-        self.clock.tick(30)
+        # Comprobar condiciones de finalización del juego
+        reward_j1, reward_j2, game_over = self.check_game_over()
 
-        # Initialize rewards and game-over flag
-        reward_j1 = 0
-        reward_j2 = 0
-        game_over = False
         
-        # Check for game-over conditions
+        return reward_j1, reward_j2, game_over
+
+    def check_game_over(self):
+        reward_j1, reward_j2, game_over = 0, 0, False
         if self.jugador1.moves <= 0 or self.jugador2.moves <= 0:
             game_over = True
             reward_j1 = -10
             reward_j2 = 10
-            self.contador_J2 += 1
-            print(f"El jugador 2 ha ganado")
+            self.container2.write("El jugador 2 ha ganado." if self.jugador1.moves <= 0 else "El jugador 1 ha ganado.")
         elif self.jugador1.pos == self.jugador2.pos:
             game_over = True
             reward_j1 = 10
             reward_j2 = -10
-            self.contador_J1 += 1
-            print("Ha ganado el jugador 1")
-        
-        # Return rewards and game-over flag
+            self.container2.write("El jugador 1 ha ganado.")
         return reward_j1, reward_j2, game_over
 
 
     def updateUI(self):
-        self.display.fill(WHITE)  # Fondo blanco
         # Crear el mapa
-        game_map = Map(self.display, grid_size, cell_size, margin)
-        # Dibujar la cuadrícula y jugadores
-        game_map.draw_grid()
-        game_map.draw_players(self.jugador1,self.jugador2)
+        game_map = Map(grid_size, cell_size, margin)
 
-        # Dibujar un círculo que cambia de color
-        game_map.draw_circle(self.jugador2)
-
-        # Dibujar contadores
-        game_map.draw_counters(self.jugador2)
-
-        # Actualizar la pantalla
-        pygame.display.flip()
+        # Obtener el contenido HTML de la cuadrícula y jugadores
+        grid_and_players_content = game_map.draw_grid_and_players(self.jugador1, self.jugador2)
+        # Insertar el contenido en el contenedor
+        self.container.write(grid_and_players_content, unsafe_allow_html=True)
